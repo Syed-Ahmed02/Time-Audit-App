@@ -80,7 +80,6 @@ export default function Home() {
   }
 
   const handleAISuggestionAccept = () => {
-    // Find Twitter/social media entries and update them to "shrink"
     const socialMediaEntry = dayEntries.find(
       (entry) =>
         entry.activity.toLowerCase().includes("twitter") || entry.activity.toLowerCase().includes("social media"),

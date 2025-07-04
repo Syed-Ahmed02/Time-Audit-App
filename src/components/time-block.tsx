@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Card, CardContent } from "@/components/ui/card"
 
-interface TimeBlockProps {
+export interface TimeBlockProps {
   id: string
   startTime?: string
   endTime?: string
@@ -18,7 +18,7 @@ interface TimeBlockProps {
   onUpdate?: (id: string, data: Partial<TimeBlockData>) => void
 }
 
-interface TimeBlockData {
+export interface TimeBlockData {
   startTime: string
   endTime: string
   activity: string
@@ -57,7 +57,7 @@ export function TimeBlock({
 
   return (
     <Card className={`border-l-4 ${categoryColors[data.category]} transition-all hover:shadow-md`}>
-      <CardContent className="p-3 md:p-4">
+      <CardContent className="">
         <div className="flex items-start gap-2 md:gap-4">
           <div className="flex-shrink-0 mt-2 flex flex-col gap-2">
             <Button
@@ -82,13 +82,12 @@ export function TimeBlock({
                   </div>
                   <div className="flex items-center gap-2 min-w-0">
                     <div
-                      className={`w-2 h-2 rounded-full flex-shrink-0 ${
-                        data.category === "growth"
+                      className={`w-2 h-2 rounded-full flex-shrink-0 ${data.category === "growth"
                           ? "bg-green-500"
                           : data.category === "shrink"
                             ? "bg-red-500"
                             : "bg-blue-500"
-                      }`}
+                        }`}
                     />
                     <span className="text-sm text-muted-foreground truncate">{data.activity || "No activity"}</span>
                   </div>
@@ -132,52 +131,54 @@ export function TimeBlock({
                     />
                   </div>
                 </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor={`activity-${id}`} className="text-sm font-medium">
-                    Activity Description
-                  </Label>
-                  <Input
-                    id={`activity-${id}`}
-                    placeholder="What did you work on?"
-                    value={data.activity}
-                    onChange={(e) => handleUpdate("activity", e.target.value)}
-                    className="w-full"
-                  />
+                <div className="flex flex-col md:flex-row gap-3 md:w-full">
+                  <div className="space-y-2 md:w-3/4">
+                    <Label htmlFor={`activity-${id}`} className="text-sm font-medium">
+                      Activity Description
+                    </Label>
+                    <Input
+                      id={`activity-${id}`}
+                      placeholder="What did you work on?"
+                      value={data.activity}
+                      onChange={(e) => handleUpdate("activity", e.target.value)}
+                      className=""
+                    />
+                    </div>
+                    <div className="space-y-2 md:w-1/4">
+                      <Label className="text-sm font-medium">Category</Label>
+                      <Select
+                        value={data.category}
+                        onValueChange={(value: "growth" | "shrink" | "maintenance") => handleUpdate("category", value)}
+                      >
+                        <SelectTrigger className="w-full  ">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="growth">
+                            <span className="flex items-center gap-2">
+                              <div className="w-3 h-3 rounded-full bg-green-500" />
+                              Growth
+                            </span>
+                          </SelectItem>
+                          <SelectItem value="maintenance">
+                            <span className="flex items-center gap-2">
+                              <div className="w-3 h-3 rounded-full bg-blue-500" />
+                              Maintenance
+                            </span>
+                          </SelectItem>
+                          <SelectItem value="shrink">
+                            <span className="flex items-center gap-2">
+                              <div className="w-3 h-3 rounded-full bg-red-500" />
+                              Shrink
+                            </span>
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
                 </div>
 
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                  <div className="space-y-2">
-                    <Label className="text-sm font-medium">Category</Label>
-                    <Select
-                      value={data.category}
-                      onValueChange={(value: "growth" | "shrink" | "maintenance") => handleUpdate("category", value)}
-                    >
-                      <SelectTrigger className="w-full sm:w-40">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="growth">
-                          <span className="flex items-center gap-2">
-                            <div className="w-3 h-3 rounded-full bg-green-500" />
-                            Growth
-                          </span>
-                        </SelectItem>
-                        <SelectItem value="maintenance">
-                          <span className="flex items-center gap-2">
-                            <div className="w-3 h-3 rounded-full bg-blue-500" />
-                            Maintenance
-                          </span>
-                        </SelectItem>
-                        <SelectItem value="shrink">
-                          <span className="flex items-center gap-2">
-                            <div className="w-3 h-3 rounded-full bg-red-500" />
-                            Shrink
-                          </span>
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
+
 
                   <Button
                     variant="ghost"

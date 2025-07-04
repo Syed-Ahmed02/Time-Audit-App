@@ -1,15 +1,14 @@
-import { integer, pgTable, varchar, timestamp, pgEnum } from "drizzle-orm/pg-core";
+import { integer, pgTable, varchar, timestamp, pgEnum,text } from "drizzle-orm/pg-core";
 
 export const usersTable = pgTable("users", {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  id: text('user_id').primaryKey().notNull(),
   name: varchar({ length: 255 }).notNull(),
-  age: integer().notNull(),
   email: varchar({ length: 255 }).notNull().unique(),
 });
 
 export const activityType = pgEnum("activity_type", ["Growth", "Maintenance", "Shrink"]);
 
-export const entryTable = pgTable("entry", {
+export const timeBlock = pgTable("timeBlock", {
     id: integer().primaryKey().generatedAlwaysAsIdentity(),
     title: varchar({ length: 255 }).notNull(),
     description: varchar({ length: 255 }).notNull(),
@@ -18,7 +17,8 @@ export const entryTable = pgTable("entry", {
     timeEnd: timestamp().notNull(),
     duration: integer().notNull(),
     notes: varchar({ length: 255 }).notNull(),
-    userId: integer().references(() => usersTable.id).notNull(),
+    userId: text('user_id').references(() => usersTable.id).notNull(),
     createdAt: timestamp().notNull().defaultNow(),
     updatedAt: timestamp().notNull().defaultNow(),
+    
 })
